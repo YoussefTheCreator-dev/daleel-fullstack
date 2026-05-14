@@ -244,7 +244,8 @@ h1,h2,h3,h4{font-family:'Nunito',sans-serif;}
     </div>
     <div class="fld"><label>University Email</label><input type="email" id="login-email" placeholder="you@university.ac.ae"/></div>
     <div class="fld"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"/></div>
-    <button class="btn-login" onclick="doLogin()">Sign in →</button>
+    <button class="btn-login" onclick="doLogin()">Sign in with Microsoft 365 →</button>
+    <button class="btn-login" style="background:var(--surface2);color:var(--text2);border:1.5px solid var(--border2);margin-top:10px;" onclick="doDemoLogin()">Demo Sign In (Skip SSO)</button>
   </div>
 </div>
  
@@ -497,6 +498,13 @@ function setRole(r){
   role=r;
   document.getElementById('rb-fresh').classList.toggle('active',r==='fresh');
   document.getElementById('rb-senior').classList.toggle('active',r==='senior');
+}
+
+async function doDemoLogin(){
+  // Auto-fill a demo student account
+  document.getElementById('login-email').value = 'student.demo@adu.ac.ae';
+  setRole('fresh');
+  await doLogin();
 }
 
 async function doLogin(){

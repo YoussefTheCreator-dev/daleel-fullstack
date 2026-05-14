@@ -162,3 +162,12 @@ app.use(async (req, res, next) => {
 });
 
 module.exports = app;
+
+// Start server if run directly (for Codespaces, Glitch, Local)
+if (require.main === module) {
+  initDb().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
+    });
+  });
+}
