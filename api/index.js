@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Mock Auth Middleware (to be replaced by MSAL)
 // For now, it looks for a user-id header
@@ -150,8 +150,15 @@ app.post('/api/auth/mock-login', (req, res) => {
   });
 });
 
-initDb().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
+// Initialize DB only once
+let isDbInitialized = false;
+
+app.use(async (req, res, next) => {
+  if (!isDbInitialized) {
+    await initDb();
+    isDbInitialized = true;
+  }
+  next();
 });
+
+module.exports = app;
