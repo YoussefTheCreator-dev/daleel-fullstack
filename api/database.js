@@ -53,6 +53,17 @@ const initDb = () => {
           const stmt = db.prepare(`INSERT INTO users (name, email, role, major, year, gpa, bio, topics, available, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
           seniors.forEach(s => stmt.run(s));
           stmt.finalize();
+
+          // Seed Mock Bookings for the demo
+          db.run(`INSERT INTO users (name, email, role) VALUES ('Yousuf Al-Amin', 'yousuf@adu.ac.ae', 'fresh')`, function() {
+            const studentId = this.lastID;
+            db.run(`INSERT INTO bookings (senior_id, student_id, slot, type, topic, status, earned) VALUES 
+              (1, ${studentId}, 'Mon 2:00 PM', 'call', 'Course Selection', 'upcoming', NULL),
+              (1, ${studentId}, 'Wed 4:00 PM', 'meet', 'Internship Tips', 'upcoming', NULL),
+              (1, ${studentId}, 'Mon 10:00 AM', 'call', 'Study Tips', 'completed', 10),
+              (1, ${studentId}, 'Thu 1:00 PM', 'meet', 'Career Advice', 'completed', 10)
+            `);
+          });
         }
       });
 
