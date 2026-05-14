@@ -1,15 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const fs = require('fs');
 
-const dbPath = process.env.DB_PATH || path.resolve(__dirname, 'daleel.db');
-
-// Ensure directory exists if DB_PATH is set
-const dbDir = path.dirname(dbPath);
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
-}
-
+const dbPath = path.resolve(__dirname, 'daleel.db');
 const db = new sqlite3.Database(dbPath);
 
 const initDb = () => {
