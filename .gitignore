@@ -1,0 +1,5 @@
+node_modules
+.env
+daleel.db
+*.log
+.DS_Store
