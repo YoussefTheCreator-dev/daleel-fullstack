@@ -54,7 +54,7 @@ app.get('/api/sessions/my', (req, res) => {
   });
 });
 
-const gmailService = require('./gmailService');
+const telegramService = require('./telegramService');
 
 // ... (rest of imports)
 
@@ -71,13 +71,9 @@ app.post('/api/sessions/book', async (req, res) => {
       async function(err) {
         if (err) return res.status(500).json({ error: err.message });
         
-        // 1. Send Email to Freshman
-        const html = gmailService.getBookingHtml(req.user.name, senior.name, slot, type);
-        await gmailService.sendEmail(req.user.email, "Session Confirmed! 📅", html);
-        
-        // 2. Send Email to Senior
-        const seniorHtml = gmailService.getBookingHtml(senior.name, req.user.name, slot, type);
-        await gmailService.sendEmail(senior.email, "New Booking Received! 🎓", seniorHtml);
+        // Send Telegram Notification
+        const message = telegramService.getBookingMessage(req.user.name, senior.name, slot, type);
+        await telegramService.sendMessage(null, message); // Sends to the admin/demo chat ID
         
         res.json({ success: true, bookingId: this.lastID });
       }
