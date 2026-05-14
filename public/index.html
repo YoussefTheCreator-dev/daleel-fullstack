@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daleel</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600&display=swap%22 rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f3ef;--surface:#fff;--surface2:#f9f8f5;
+  --primary:#3d6b4f;--primary-light:#edf4ef;--primary-mid:#6fa882;
+  --accent:#e8834a;--accent-light:#fdf0e8;
+  --text:#1e1e1e;--text2:#5c5c6e;--text3:#9898a8;
+  --border:#e8e6e0;--border2:#d4d1c8;
+  --gold:#c9972a;--gold-bg:#fef3d0;--gold-border:#f0d080;
+  --radius:18px;--radius-sm:10px;--radius-xs:7px;
+  --shadow:0 2px 16px rgba(0,0,0,.07);--shadow-md:0 6px 28px rgba(0,0,0,.10);
+}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;}
+h1,h2,h3,h4{font-family:'Nunito',sans-serif;}
+.page{display:none;min-height:100vh;flex-direction:column;}
+.page.active{display:flex;}
+ 
+.topbar{background:var(--surface);border-bottom:1.5px solid var(--border);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--primary);}
+.logo-bub{width:36px;height:36px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.topbar-r{display:flex;align-items:center;gap:10px;}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:40px;padding:5px 14px 5px 5px;font-size:13px;font-weight:600;color:var(--text2);}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.btn-out{padding:7px 16px;border-radius:40px;border:1.5px solid var(--border2);background:transparent;font-family:'Nunito Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .18s;}
+.btn-out:hover{background:var(--bg);color:var(--text);}
+ 
+/* LOGIN */
+#page-login{background:linear-gradient(145deg,#eef6f0 0%,#f5f3ef 60%,#fdf0e8 100%);align-items:center;justify-content:center;min-height:100vh;}
+.login-wrap{width:400px;background:var(--surface);border-radius:24px;border:1.5px solid var(--border);padding:40px 36px;box-shadow:var(--shadow-md);}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Nunito',sans-serif;font-size:22px;font-weight:800;color:var(--primary);}
+.login-logo .bub{width:42px;height:42px;border-radius:14px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.login-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.login-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.6;}
+.role-row{display:flex;gap:8px;margin-bottom:24px;}
+.role-btn{flex:1;padding:10px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--text2);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.role-btn.active{background:var(--primary-light);border-color:var(--primary-mid);color:var(--primary);}
+.fld{margin-bottom:16px;}
+.fld label{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.fld input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito Sans',sans-serif;font-size:14px;background:var(--surface2);color:var(--text);outline:none;transition:border-color .18s;}
+.fld input:focus{border-color:var(--primary);background:#fff;}
+.btn-login{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:background .18s,transform .1s;margin-top:6px;}
+.btn-login:hover{background:#2f5540;}
+.btn-login:active{transform:scale(0.985);}
+ 
+/* BROWSE */
+.browse-body{flex:1;padding:32px;max-width:1120px;margin:0 auto;width:100%;}
+.page-title{font-size:26px;font-weight:800;color:var(--text);}
+.page-sub{font-size:14px;color:var(--text2);margin-top:4px;margin-bottom:20px;}
+ 
+.pricing-banner{display:flex;align-items:center;gap:14px;background:var(--gold-bg);border:1.5px solid var(--gold-border);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:22px;}
+.pricing-banner .pbi{font-size:24px;flex-shrink:0;}
+.pricing-banner .pbt{flex:1;}
+.pricing-banner .pbt strong{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#7a5200;display:block;margin-bottom:2px;}
+.pricing-banner .pbt span{font-size:13px;color:#8a6010;line-height:1.5;}
+.price-badge{background:var(--gold);color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:6px 14px;border-radius:40px;white-space:nowrap;flex-shrink:0;}
+ 
+.filter-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.search-box{flex:1;min-width:200px;position:relative;}
+.search-box input{width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--border);border-radius:40px;font-family:'Nunito Sans',sans-serif;font-size:14px;background:var(--surface);color:var(--text);outline:none;transition:border-color .18s;}
+.search-box input:focus{border-color:var(--primary);}
+.search-box .ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text3);fill:none;stroke-width:2;}
+.pill-sel{padding:9px 16px;border:1.5px solid var(--border);border-radius:40px;font-family:'Nunito Sans',sans-serif;font-size:13px;font-weight:600;background:var(--surface);color:var(--text2);cursor:pointer;outline:none;}
+.major-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.mpill{padding:7px 16px;border-radius:40px;border:1.5px solid var(--border);background:var(--surface);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--text2);transition:all .18s;white-space:nowrap;}
+.mpill.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+.mpill:hover:not(.active){border-color:var(--primary-mid);color:var(--primary);}
+ 
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px;}
+.s-card{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);padding:22px;transition:box-shadow .2s,transform .2s;animation:fadeUp .35s ease both;}
+.s-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.s-card:nth-child(1){animation-delay:.04s}.s-card:nth-child(2){animation-delay:.08s}.s-card:nth-child(3){animation-delay:.12s}
+.s-card:nth-child(4){animation-delay:.16s}.s-card:nth-child(5){animation-delay:.20s}.s-card:nth-child(6){animation-delay:.24s}
+.s-card:nth-child(7){animation-delay:.28s}.s-card:nth-child(8){animation-delay:.32s}
+.card-top{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.av-lg{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;flex-shrink:0;color:#fff;}
+.s-name{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;color:var(--text);}
+.s-major{font-size:12px;color:var(--text2);margin-top:2px;font-weight:600;}
+.avail-bd{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:40px;font-size:11px;font-weight:700;margin-top:5px;}
+.avail-bd.on{background:#e6f6ec;color:#2d7a47;}.avail-bd.off{background:#f5f5f5;color:#999;}
+.avail-bd .dot{width:6px;height:6px;border-radius:50%;}
+.avail-bd.on .dot{background:#2d7a47;}.avail-bd.off .dot{background:#bbb;}
+.s-bio{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.tag{padding:4px 10px;border-radius:40px;background:var(--surface2);border:1.5px solid var(--border);font-size:11px;font-weight:700;color:var(--text2);}
+.card-price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.card-price{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--gold);background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:40px;padding:4px 11px;}
+.card-btns{display:flex;gap:8px;}
+.cbtn{flex:1;padding:10px 8px;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .18s;}
+.cbtn-call{background:var(--primary);color:#fff;border-color:var(--primary);}
+.cbtn-call:hover{background:#2f5540;}
+.cbtn-meet{background:var(--surface2);color:var(--text);border-color:var(--border2);}
+.cbtn-meet:hover{background:var(--bg);border-color:var(--primary-mid);color:var(--primary);}
+.cbtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;}
+ 
+/* SENIOR DASH */
+.dash-body{flex:1;padding:32px;max-width:900px;margin:0 auto;width:100%;}
+.dash-welcome{background:var(--primary);border-radius:var(--radius);padding:28px 32px;margin-bottom:24px;color:#fff;position:relative;overflow:hidden;}
+.dash-welcome::after{content:'🎓';position:absolute;right:28px;top:50%;transform:translateY(-50%);font-size:52px;opacity:.2;}
+.dash-welcome h2{font-size:22px;font-weight:800;margin-bottom:4px;}
+.dash-welcome p{font-size:14px;opacity:.85;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+.stat-box{background:var(--surface);border-radius:var(--radius-sm);border:1.5px solid var(--border);padding:18px 20px;}
+.stat-num{font-family:'Nunito',sans-serif;font-size:28px;font-weight:800;color:var(--primary);}
+.stat-label{font-size:12px;font-weight:700;color:var(--text2);margin-top:2px;}
+ 
+/* EARNINGS */
+.earnings-card{background:linear-gradient(135deg,#3d6b4f,#2a5038);border-radius:var(--radius);padding:24px 28px;margin-bottom:26px;color:#fff;position:relative;overflow:hidden;}
+.earnings-card::before{content:'';position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);top:-70px;right:-50px;}
+.earn-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;gap:16px;}
+.earn-left .earn-lbl{font-size:12px;font-weight:700;opacity:.75;margin-bottom:6px;}
+.earn-left .earn-amt{font-family:'Nunito',sans-serif;font-size:42px;font-weight:800;line-height:1;}
+.earn-left .earn-sub{font-size:12px;opacity:.6;margin-top:5px;}
+.earn-right{background:rgba(255,255,255,.15);border-radius:var(--radius-sm);padding:12px 16px;text-align:center;flex-shrink:0;}
+.earn-right .rate{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;}
+.earn-right .rate-lbl{font-size:11px;opacity:.7;margin-top:2px;}
+.earn-btns{display:flex;gap:10px;}
+.ebtn{flex:1;padding:11px 10px;border-radius:var(--radius-xs);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;border:none;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ebtn-main{background:#fff;color:var(--primary);}
+.ebtn-main:hover{background:#f0faf4;}
+.ebtn-sec{background:rgba(255,255,255,.18);color:#fff;border:1.5px solid rgba(255,255,255,.3);}
+.ebtn-sec:hover{background:rgba(255,255,255,.28);}
+ 
+.sec-head{font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:14px;}
+.bk-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.bk-card{background:var(--surface);border-radius:var(--radius-sm);border:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;gap:16px;transition:box-shadow .18s;}
+.bk-card:hover{box-shadow:var(--shadow);}
+.bk-date{min-width:52px;background:var(--primary-light);border-radius:var(--radius-xs);padding:8px 6px;text-align:center;border:1.5px solid #c4dbc9;flex-shrink:0;}
+.bk-day{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--primary);line-height:1;}
+.bk-mon{font-size:11px;font-weight:700;color:var(--primary-mid);text-transform:uppercase;letter-spacing:.05em;}
+.bk-info{flex:1;}
+.bk-name{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--text);}
+.bk-details{font-size:13px;color:var(--text2);margin-top:3px;}
+.bk-earned{font-size:12px;font-weight:700;color:var(--gold);margin-top:4px;}
+.bk-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
+.bk-type{padding:5px 12px;border-radius:40px;font-size:12px;font-weight:700;white-space:nowrap;}
+.bk-call{background:#e8f0fe;color:#1a56db;}.bk-meet{background:var(--accent-light);color:var(--accent);}
+.bk-acts{display:flex;gap:8px;}
+.bk-btn{padding:7px 13px;border-radius:var(--radius-xs);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border2);background:var(--surface2);color:var(--text2);transition:all .18s;}
+.bk-btn.danger{border-color:#f5c6c6;color:#c0392b;background:#fff8f8;}
+.bk-btn:hover{background:var(--bg);}
+.bk-btn.danger:hover{background:#fdecea;}
+.empty-s{background:var(--surface2);border-radius:var(--radius-sm);border:1.5px dashed var(--border2);padding:28px;text-align:center;color:var(--text3);font-size:14px;font-weight:600;}
+ 
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(20,20,30,.45);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:var(--surface);border-radius:22px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.18);}
+.modal-top{padding:22px 24px 18px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:14px;}
+.modal-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;color:#fff;flex-shrink:0;}
+.modal-name{font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;color:var(--text);}
+.modal-major{font-size:13px;color:var(--text2);margin-top:2px;font-weight:600;}
+.modal-close{margin-left:auto;width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:var(--text2);flex-shrink:0;transition:background .18s;}
+.modal-close:hover{background:var(--bg);}
+.modal-body{padding:20px 24px 26px;}
+.m-sec{margin-bottom:20px;}
+.m-lbl{font-size:11px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+.m-bio{font-size:14px;color:var(--text2);line-height:1.7;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.info-item{background:var(--surface2);border-radius:var(--radius-xs);padding:12px 14px;border:1.5px solid var(--border);}
+.info-item-lbl{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:3px;}
+.info-item-val{font-size:14px;font-weight:700;color:var(--text);}
+.type-toggle{display:flex;gap:8px;margin-bottom:16px;}
+.t-btn{flex:1;padding:11px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--text2);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.t-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;}
+.t-btn.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.slot{padding:9px 6px;text-align:center;border-radius:var(--radius-xs);border:1.5px solid var(--border);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--text2);background:var(--surface2);transition:all .18s;}
+.slot:hover{border-color:var(--primary-mid);color:var(--primary);}
+.slot.picked{background:var(--primary);border-color:var(--primary);color:#fff;}
+.loc-pick{margin-bottom:16px;}
+.loc-pick select{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito Sans',sans-serif;font-size:14px;background:var(--surface2);color:var(--text);outline:none;}
+ 
+/* PAYMENT BOX */
+.pay-box{background:var(--gold-bg);border:1.5px solid var(--gold-border);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:16px;}
+.pay-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.pay-top-row .pay-lbl{font-size:13px;font-weight:700;color:#7a5200;}
+.pay-top-row .pay-price{font-family:'Nunito',sans-serif;font-size:24px;font-weight:800;color:var(--gold);}
+.pay-method-lbl{font-size:12px;font-weight:700;color:#7a5200;margin-bottom:8px;}
+.pay-opts{display:flex;gap:8px;margin-bottom:10px;}
+.pay-opt{flex:1;padding:9px 8px;border-radius:var(--radius-xs);border:1.5px solid var(--gold-border);background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#7a5200;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.pay-opt.active{background:var(--gold);border-color:var(--gold);color:#fff;}
+.pay-opt:hover:not(.active){background:#fde8a0;}
+.pay-note{font-size:12px;color:#8a6010;line-height:1.55;}
+.btn-confirm{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:background .18s;}
+.btn-confirm:hover{background:#2f5540;}
+ 
+/* WITHDRAW MODAL */
+.woverlay{position:fixed;inset:0;background:rgba(20,20,30,.5);display:none;align-items:center;justify-content:center;z-index:300;padding:20px;}
+.woverlay.open{display:flex;}
+.wmodal{background:var(--surface);border-radius:22px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.2);padding:30px 28px;}
+.wmodal-title{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.wmodal-sub{font-size:13px;color:var(--text2);margin-bottom:22px;line-height:1.5;}
+.wopt{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:10px;transition:all .18s;background:var(--surface2);}
+.wopt:hover{border-color:var(--primary-mid);background:var(--primary-light);}
+.wopt.selected{border-color:var(--primary);background:var(--primary-light);}
+.wopt-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.wopt-info strong{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--text);display:block;}
+.wopt-info span{font-size:12px;color:var(--text2);}
+.wamt-wrap{margin:16px 0 20px;}
+.wamt-wrap label{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.wamt-inp{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--primary);background:var(--surface2);outline:none;text-align:center;transition:border-color .18s;}
+.wamt-inp:focus{border-color:var(--primary);}
+.wmodal-btns{display:flex;gap:10px;}
+.wbtn{flex:1;padding:12px;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .18s;}
+.wbtn-cancel{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border2);}
+.wbtn-cancel:hover{background:var(--bg);}
+.wbtn-go{background:var(--primary);color:#fff;border:none;}
+.wbtn-go:hover{background:#2f5540;}
+ 
+/* SUCCESS */
+.suc-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;}
+.suc-card{background:var(--surface);border-radius:24px;border:1.5px solid var(--border);padding:40px 36px;max-width:480px;width:100%;text-align:center;box-shadow:var(--shadow-md);}
+.suc-icon{width:68px;height:68px;border-radius:50%;background:#e6f6ec;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;}
+.suc-title{font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.suc-sub{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:20px;}
+.suc-sum{background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;text-align:left;border:1.5px solid var(--border);}
+.suc-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);}
+.suc-row:last-child{border-bottom:none;}
+.suc-rl{color:var(--text2);font-weight:600;}.suc-rv{font-weight:700;color:var(--text);}
+.suc-pay-note{background:var(--gold-bg);border:1.5px solid var(--gold-border);border-radius:var(--radius-xs);padding:12px 14px;font-size:13px;color:#7a5200;font-weight:600;margin-bottom:20px;text-align:left;line-height:1.55;}
+.btn-bb{padding:12px 28px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:background .18s;}
+.btn-bb:hover{background:#2f5540;}
+</style>
+</head>
+<body>
+ 
+<!-- ══ LOGIN ══ -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-logo"><div class="bub">🤝</div>Daleel</div>
+    <h2 class="login-title">Talk to seniors who've already figured it out 🎓</h2>
+    <p class="login-sub">Daleel connects you with seniors who've navigated university life — for real advice on academics, majors, career paths, and campus decisions. Not tutoring. Guidance from people who've been there.</p>
+    <div class="role-row">
+      <button class="role-btn active" id="rb-fresh" onclick="setRole('fresh')">🎒 Freshmen</button>
+      <button class="role-btn" id="rb-senior" onclick="setRole('senior')">🎓 Senior</button>
+    </div>
+    <div class="fld"><label>University Email</label><input type="email" id="login-email" placeholder="you@university.ac.ae"/></div>
+    <div class="fld"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"/></div>
+    <button class="btn-login" onclick="doLogin()">Sign in →</button>
+  </div>
+</div>
+ 
+<!-- ══ FRESHMEN BROWSE ══ -->
+<div class="page" id="page-browse">
+  <div class="topbar">
+    <div class="logo"><div class="logo-bub">🤝</div>Daleel</div>
+    <div class="topbar-r">
+      <button class="btn-out" style="background:var(--primary-light);color:var(--primary);border-color:#c4dbc9;" onclick="showMySessions()">📅 My Sessions</button>
+      <div class="user-chip"><div class="av" id="nav-av" style="background:#3d6b4f">YA</div><span id="nav-name">You</span></div>
+      <button class="btn-out" onclick="doLogout()">Log out</button>
+    </div>
+  </div>
+  <div class="browse-body">
+    <h1 class="page-title">Find a Senior 🔍</h1>
+    <p class="page-sub">Find a senior advisor in your major — get real guidance on courses, career paths, and university life. Book a session for just 10 AED.</p>
+ 
+    <div class="pricing-banner">
+      <div class="pbi">💳</div>
+      <div class="pbt">
+        <strong>Sessions are 10 AED each</strong>
+        <span>Pay by card or cash at the front desk. Your session is confirmed after payment.</span>
+      </div>
+      <div class="price-badge">10 AED</div>
+    </div>
+ 
+    <div class="filter-bar">
+      <div class="search-box">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search-q" placeholder="Search by name or topic…" oninput="applyFilters()"/>
+      </div>
+      <select class="pill-sel" id="avail-sel" onchange="applyFilters()">
+        <option value="">Any availability</option>
+        <option value="1">Available now</option>
+      </select>
+    </div>
+    <div class="major-pills" id="major-pills"></div>
+    <div class="grid" id="cards-grid"></div>
+  </div>
+</div>
+ 
+<!-- ══ SENIOR DASHBOARD ══ -->
+<div class="page" id="page-senior">
+  <div class="topbar">
+    <div class="logo"><div class="logo-bub">🤝</div>Daleel</div>
+    <div class="topbar-r">
+      <div class="user-chip"><div class="av" id="sn-av" style="background:#6fa882">SR</div><span id="sn-name">Senior</span></div>
+      <button class="btn-out" onclick="doLogout()">Log out</button>
+    </div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-welcome">
+      <h2 id="dash-greet">Hey there! 👋</h2>
+      <p>Here are your scheduled sessions and your current earnings.</p>
+    </div>
+ 
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num" id="stat-total">5</div><div class="stat-label">Total bookings</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-week">2</div><div class="stat-label">This week</div></div>
+      <div class="stat-box"><div class="stat-num">4.9 ⭐</div><div class="stat-label">Your rating</div></div>
+    </div>
+ 
+    <div class="earnings-card">
+      <div class="earn-top">
+        <div class="earn-left">
+          <div class="earn-lbl">Your current balance</div>
+          <div class="earn-amt" id="earn-amt">60 <span style="font-size:20px;opacity:.65">AED</span></div>
+          <div class="earn-sub" id="earn-sub">From 3 completed sessions this month</div>
+        </div>
+        <div class="earn-right">
+          <div class="rate">20 AED</div>
+          <div class="rate-lbl">per hour</div>
+        </div>
+      </div>
+      <div class="earn-btns">
+        <button class="ebtn ebtn-main" onclick="openWithdraw('bank')">🏦 Withdraw to bank</button>
+        <button class="ebtn ebtn-sec" onclick="openWithdraw('uni')">🎓 Withdraw to university account</button>
+      </div>
+    </div>
+ 
+    <div class="sec-head">📅 Upcoming Sessions</div>
+    <div class="bk-list" id="bk-upcoming"></div>
+    <div class="sec-head">✅ Past Sessions</div>
+    <div class="bk-list" id="bk-past"></div>
+  </div>
+</div>
+ 
+<!-- ══ SUCCESS ══ -->
+<div class="page" id="page-success">
+  <div class="topbar">
+    <div class="logo"><div class="logo-bub">🤝</div>Daleel</div>
+    <div class="topbar-r">
+      <div class="user-chip"><div class="av" style="background:#3d6b4f">YA</div><span>You</span></div>
+      <button class="btn-out" onclick="doLogout()">Log out</button>
+    </div>
+  </div>
+  <div class="suc-wrap">
+    <div class="suc-card">
+      <div class="suc-icon">✅</div>
+      <h2 class="suc-title">You're all set! 🎉</h2>
+      <p class="suc-sub" id="suc-msg">Your session has been confirmed!</p>
+      <div class="suc-sum" id="suc-sum"></div>
+      <div class="suc-pay-note" id="suc-pay-note"></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+        <button class="btn-bb" onclick="showMySessions()">📅 View my sessions</button>
+        <button class="btn-bb" style="background:var(--surface2);color:var(--text2);border:1.5px solid var(--border2);" onclick="showPage('browse')">← Browse more seniors</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MY SESSIONS (FRESHMAN) ══ -->
+<div class="page" id="page-mysessions">
+  <div class="topbar">
+    <div class="logo"><div class="logo-bub">🤝</div>Daleel</div>
+    <div class="topbar-r">
+      <div class="user-chip"><div class="av" id="ms-av" style="background:#3d6b4f">YA</div><span id="ms-name">You</span></div>
+      <button class="btn-out" onclick="doLogout()">Log out</button>
+    </div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-welcome">
+      <h2 id="ms-greet">My Sessions 📅</h2>
+      <p>All your booked advising sessions in one place.</p>
+    </div>
+    <div class="sec-head">📅 Upcoming Sessions</div>
+    <div class="bk-list" id="ms-upcoming"></div>
+    <div class="sec-head">✅ Past Sessions</div>
+    <div class="bk-list" id="ms-past"></div>
+    <div style="margin-top:8px;">
+      <button class="btn-bb" style="background:var(--surface2);color:var(--text2);border:1.5px solid var(--border2);" onclick="showPage('browse')">← Back to browse</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING MODAL ══ -->
+<div class="overlay" id="overlay" onclick="maybeClose(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-top">
+      <div class="modal-av" id="m-av"></div>
+      <div><div class="modal-name" id="m-name"></div><div class="modal-major" id="m-major"></div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-sec">
+        <div class="m-lbl">About</div>
+        <p class="m-bio" id="m-bio"></p>
+      </div>
+      <div class="m-sec">
+        <div class="m-lbl">Quick info</div>
+        <div class="info-grid" id="m-info"></div>
+      </div>
+      <div class="m-sec">
+        <div class="m-lbl">Session type</div>
+        <div class="type-toggle">
+          <button class="t-btn active" id="tb-call" onclick="setType('call')">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Video call
+          </button>
+          <button class="t-btn" id="tb-meet" onclick="setType('meet')">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Meet in person
+          </button>
+        </div>
+        <div class="m-lbl">Pick a time</div>
+        <div class="slot-grid">
+          <button class="slot" onclick="pickSlot(this)">Mon 9:00 AM</button>
+          <button class="slot" onclick="pickSlot(this)">Mon 2:00 PM</button>
+          <button class="slot" onclick="pickSlot(this)">Tue 10:00 AM</button>
+          <button class="slot" onclick="pickSlot(this)">Tue 3:30 PM</button>
+          <button class="slot" onclick="pickSlot(this)">Wed 11:00 AM</button>
+          <button class="slot" onclick="pickSlot(this)">Thu 1:00 PM</button>
+        </div>
+        <div class="loc-pick" id="loc-pick" style="display:none">
+          <div class="m-lbl">Location</div>
+          <select>
+            <option>Main Library — Study Room 2</option>
+            <option>Engineering Building — Room 104</option>
+            <option>Student Centre — Lounge</option>
+            <option>IT Building — Room 215</option>
+          </select>
+        </div>
+      </div>
+      <div class="m-sec">
+        <div class="m-lbl">Payment</div>
+        <div class="pay-box">
+          <div class="pay-top-row">
+            <span class="pay-lbl">Session fee</span>
+            <span class="pay-price">10 AED</span>
+          </div>
+          <div class="pay-method-lbl">How would you like to pay?</div>
+          <div class="pay-opts">
+            <button class="pay-opt active" id="pay-card" onclick="setPayment('card')">💳 Card</button>
+            <button class="pay-opt" id="pay-cash" onclick="setPayment('cash')">🏦 Cash at front desk</button>
+          </div>
+          <p class="pay-note" id="pay-note">Your card will be charged 10 AED when you confirm.</p>
+        </div>
+        <button class="btn-confirm" onclick="confirmBooking()">Confirm &amp; pay 10 AED →</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ══ WITHDRAW MODAL ══ -->
+<div class="woverlay" id="woverlay" onclick="maybeCloseW(event)">
+  <div class="wmodal">
+    <div class="wmodal-title">Withdraw earnings 💸</div>
+    <p class="wmodal-sub">Choose where you'd like to send your balance.</p>
+    <div class="wopt selected" id="wopt-bank" onclick="selectWopt('bank')">
+      <div class="wopt-icon" style="background:#e8f0fe">🏦</div>
+      <div class="wopt-info">
+        <strong>Personal bank account</strong>
+        <span>Transfer to your linked bank account (1–2 business days)</span>
+      </div>
+    </div>
+    <div class="wopt" id="wopt-uni" onclick="selectWopt('uni')">
+      <div class="wopt-icon" style="background:#edf4ef">🎓</div>
+      <div class="wopt-info">
+        <strong>University account</strong>
+        <span>Credit to your university wallet — use for fees, printing, and more</span>
+      </div>
+    </div>
+    <div class="wamt-wrap">
+      <label>Amount to withdraw (AED)</label>
+      <input class="wamt-inp" type="number" id="w-amount" value="60" min="1"/>
+    </div>
+    <div class="wmodal-btns">
+      <button class="wbtn wbtn-cancel" onclick="closeWithdraw()">Cancel</button>
+      <button class="wbtn wbtn-go" onclick="confirmWithdraw()">Confirm withdrawal</button>
+    </div>
+  </div>
+</div>
+ 
+<script>
+const MAJORS=['IT','Computer Engineering','Biomedical Engineering','Architecture','Public Relations','Public Health','Cybersecurity Engineering','Civil Engineering','Mechanical Engineering','Psychology'];
+
+let role='fresh', activeMajor='All', currentSenior=null, sessionType='call', pickedSlot=null, payMethod='card';
+let wDest='bank', currentUser=null, balance=0, seniorsList=[];
+
+// Utility for API calls with Auth header
+async function apiFetch(endpoint, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  if (currentUser) headers['user-id'] = currentUser.id;
+  const res = await fetch(endpoint, { ...options, headers });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+function setRole(r){
+  role=r;
+  document.getElementById('rb-fresh').classList.toggle('active',r==='fresh');
+  document.getElementById('rb-senior').classList.toggle('active',r==='senior');
+}
+
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) { alert('Please enter your university email'); return; }
+  
+  try {
+    currentUser = await apiFetch('/api/auth/mock-login', {
+      method: 'POST',
+      body: JSON.stringify({ email, role })
+    });
+    
+    const initials = currentUser.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('nav-av').textContent   = initials;
+    document.getElementById('nav-name').textContent = currentUser.name;
+    
+    if (currentUser.role === 'senior') {
+      document.getElementById('sn-av').textContent      = initials;
+      document.getElementById('sn-name').textContent    = currentUser.name;
+      document.getElementById('dash-greet').textContent = 'Hey, ' + (currentUser.name.split(' ')[0]||'there') + '! 👋';
+      await renderDash();
+      showPage('senior');
+    } else {
+      buildPills();
+      await applyFilters();
+      showPage('browse');
+    }
+  } catch (err) {
+    alert('Login failed: ' + err.message);
+  }
+}
+
+function doLogout(){ currentUser=null; showPage('login'); }
+function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById('page-'+id).classList.add('active'); }
+
+function buildPills(){
+  const w = document.getElementById('major-pills');
+  w.innerHTML = ['All',...MAJORS].map(m=>`<button class="mpill${m==='All'?' active':''}" onclick="setMajor('${m.replace(/'/g,"\\'")}',this)">${m}</button>`).join('');
+}
+
+function setMajor(m,el){
+  activeMajor=m;
+  document.querySelectorAll('.mpill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+
+async function applyFilters(){
+  const q     = (document.getElementById('search-q')?.value || '').toLowerCase();
+  const avail = document.getElementById('avail-sel')?.value;
+  
+  try {
+    const allSeniors = await apiFetch('/api/seniors');
+    let list = allSeniors;
+    if (activeMajor !== 'All') list = list.filter(s => s.major === activeMajor);
+    if (avail === '1') list = list.filter(s => s.available);
+    if (q) list = list.filter(s => s.name.toLowerCase().includes(q) || s.major.toLowerCase().includes(q) || s.bio.toLowerCase().includes(q) || s.topics.some(t=>t.toLowerCase().includes(q)));
+    seniorsList = list;
+    renderCards(seniorsList);
+  } catch (err) {
+    console.error('Failed to fetch seniors:', err);
+  }
+}
+
+function renderCards(list){
+  const g = document.getElementById('cards-grid');
+  if (!list.length) { g.innerHTML='<p style="color:var(--text3);font-size:14px;font-weight:600;padding:32px 0;">No seniors found — try adjusting the filters! 🙂</p>'; return; }
+  g.innerHTML = list.map(s=>`
+    <div class="s-card">
+      <div class="card-top">
+        <div class="av-lg" style="background:${s.color}">${s.initials}</div>
+        <div>
+          <div class="s-name">${s.name}</div>
+          <div class="s-major">${s.major} · ${s.year}</div>
+          <div class="avail-bd ${s.available?'on':'off'}"><span class="dot"></span>${s.available?'Available now':'Busy this week'}</div>
+        </div>
+      </div>
+      <p class="s-bio">${s.bio.length>100?s.bio.slice(0,100)+'…':s.bio}</p>
+      <div class="tags">${s.topics.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="card-price-row"><span class="card-price">💳 10 AED per session</span></div>
+      <div class="card-btns">
+        <button class="cbtn cbtn-call" onclick="openModal(${s.id},'call')">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Book a call
+        </button>
+        <button class="cbtn cbtn-meet" onclick="openModal(${s.id},'meet')">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Meet up
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function renderDash(){
+  try {
+    const bookings = await apiFetch('/api/sessions/my');
+    const upcoming = bookings.filter(b=>b.status==='upcoming');
+    const past     = bookings.filter(b=>b.status==='completed');
+    
+    balance = past.reduce((sum, b) => sum + (b.earned || 0), 0);
+    
+    document.getElementById('stat-total').textContent = bookings.length;
+    document.getElementById('stat-week').textContent  = upcoming.length;
+    document.getElementById('earn-amt').innerHTML     = `${balance} <span style="font-size:20px;opacity:.65">AED</span>`;
+    document.getElementById('earn-sub').textContent   = `From ${past.length} completed session${past.length!==1?'s':''} this month`;
+    
+    const upEl = document.getElementById('bk-upcoming');
+    upEl.innerHTML = upcoming.length ? upcoming.map((b,i)=>bkHTML(b,i,false)).join('') : `<div class="empty-s">😊 No upcoming sessions yet — freshmen will book you soon!</div>`;
+    const pastEl = document.getElementById('bk-past');
+    pastEl.innerHTML = past.length ? past.map((b,i)=>bkHTML(b,i,true)).join('') : `<div class="empty-s">📭 No past sessions yet.</div>`;
+  } catch (err) {
+    console.error('Failed to render dashboard:', err);
+  }
+}
+
+function bkHTML(b,i,isPast){
+  const parts = b.slot.split(' ');
+  const day = parts[0], time = parts.slice(1).join(' ');
+  return `<div class="bk-card">
+    <div class="bk-date"><div class="bk-day">${day}</div><div class="bk-mon">${time}</div></div>
+    <div class="bk-info">
+      <div class="bk-name">${b.student_name||b.senior_name||''}</div>
+      <div class="bk-details">${b.slot} · ${b.topic||'General advice'}</div>
+      ${isPast&&b.earned?`<div class="bk-earned">+${b.earned} AED earned</div>`:''}
+    </div>
+    <div class="bk-right">
+      <span class="bk-type ${b.type==='call'?'bk-call':'bk-meet'}">${b.type==='call'?'📞 Video call':'📍 In person'}</span>
+      ${!isPast?`<div class="bk-acts"><button class="bk-btn">Reschedule</button><button class="bk-btn danger" onclick="cancelBk(${b.id})">Cancel</button></div>`:'<span style="font-size:12px;font-weight:700;color:#2d7a47;">✓ Done</span>'}
+    </div>
+  </div>`;
+}
+
+async function cancelBk(id){ 
+  // In a real app, this would be a DELETE call
+  alert('Cancel feature to be implemented with API');
+}
+
+function openModal(id,type){
+  currentSenior = seniorsList.find(s=>s.id===id);
+  if (!currentSenior) return;
+  sessionType=type; pickedSlot=null; payMethod='card';
+  const s = currentSenior;
+  document.getElementById('m-av').textContent        = s.initials;
+  document.getElementById('m-av').style.background   = s.color;
+  document.getElementById('m-name').textContent      = s.name;
+  document.getElementById('m-major').textContent     = s.major+' · '+s.year;
+  document.getElementById('m-bio').textContent       = s.bio;
+  document.getElementById('m-info').innerHTML = `
+    <div class="info-item"><div class="info-item-lbl">GPA</div><div class="info-item-val">${s.gpa} / 4.0</div></div>
+    <div class="info-item"><div class="info-item-lbl">Major</div><div class="info-item-val">${s.major}</div></div>
+    <div class="info-item"><div class="info-item-lbl">Status</div><div class="info-item-val" style="color:${s.available?'#2d7a47':'#999'}">${s.available?'✅ Available':'⏳ Busy'}</div></div>
+    <div class="info-item"><div class="info-item-lbl">Year</div><div class="info-item-val">${s.year}</div></div>
+  `;
+  setType(type); setPayment('card');
+  document.querySelectorAll('.slot').forEach(sl=>sl.classList.remove('picked'));
+  document.getElementById('overlay').classList.add('open');
+}
+
+function setType(t){
+  sessionType=t;
+  document.getElementById('tb-call').classList.toggle('active',t==='call');
+  document.getElementById('tb-meet').classList.toggle('active',t==='meet');
+  document.getElementById('loc-pick').style.display=t==='meet'?'block':'none';
+}
+
+function setPayment(m){
+  payMethod=m;
+  document.getElementById('pay-card').classList.toggle('active',m==='card');
+  document.getElementById('pay-cash').classList.toggle('active',m==='cash');
+  document.getElementById('pay-note').textContent=m==='card'
+    ?'Your card will be charged 10 AED when you confirm.'
+    :'Head to the front desk to pay 10 AED in cash. Your session is reserved for 24 hours.';
+}
+
+function pickSlot(el){
+  document.querySelectorAll('.slot').forEach(s=>s.classList.remove('picked'));
+  el.classList.add('picked');
+  pickedSlot=el.textContent.trim();
+}
+
+function maybeClose(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+
+async function confirmBooking(){
+  if (!pickedSlot) { alert('Please pick a time slot 😊'); return; }
+  const s = currentSenior;
+  
+  try {
+    const result = await apiFetch('/api/sessions/book', {
+      method: 'POST',
+      body: JSON.stringify({
+        senior_id: s.id,
+        slot: pickedSlot,
+        type: sessionType,
+        topic: 'General advice'
+      })
+    });
+    
+    if (result.success) {
+      const tl = sessionType==='call'?'Video Call':'Face-to-Face Meeting';
+      const pm = payMethod==='card'?'Card payment':'Cash at front desk';
+      document.getElementById('suc-msg').textContent = `Your ${tl.toLowerCase()} with ${s.name} is confirmed! You'll get a reminder before it starts.`;
+      document.getElementById('suc-sum').innerHTML = `
+        <div class="suc-row"><span class="suc-rl">Senior</span><span class="suc-rv">${s.name}</span></div>
+        <div class="suc-row"><span class="suc-rl">Major</span><span class="suc-rv">${s.major}</span></div>
+        <div class="suc-row"><span class="suc-rl">Type</span><span class="suc-rv">${tl}</span></div>
+        <div class="suc-row"><span class="suc-rl">Time</span><span class="suc-rv">${pickedSlot}</span></div>
+        <div class="suc-row"><span class="suc-rl">Duration</span><span class="suc-rv">45 minutes</span></div>
+        <div class="suc-row"><span class="suc-rl">Fee</span><span class="suc-rv" style="color:var(--gold);font-size:15px;">10 AED</span></div>
+        <div class="suc-row"><span class="suc-rl">Payment</span><span class="suc-rv">${pm}</span></div>
+      `;
+      document.getElementById('suc-pay-note').innerHTML = payMethod==='card'
+        ?'💳 <strong>10 AED has been charged</strong> to your card. Keep this confirmation as your receipt.'
+        :'🏦 <strong>Please pay 10 AED cash at the front desk</strong> within 24 hours to confirm your session. Show them this screen.';
+      closeModal(); showPage('success');
+    }
+  } catch (err) {
+    alert('Booking failed: ' + err.message);
+  }
+}
+
+async function showMySessions(){
+  if (currentUser) {
+    const initials = currentUser.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('ms-av').textContent   = initials;
+    document.getElementById('ms-name').textContent = currentUser.name;
+    document.getElementById('ms-greet').textContent = 'My Sessions 📅';
+  }
+  await renderMySessions();
+  showPage('mysessions');
+}
+
+async function renderMySessions(){
+  try {
+    const bookings = await apiFetch('/api/sessions/my');
+    const upcoming = bookings.filter(b=>b.status==='upcoming');
+    const past     = bookings.filter(b=>b.status==='completed');
+    const upEl = document.getElementById('ms-upcoming');
+    upEl.innerHTML = upcoming.length ? upcoming.map(b=>myBkHTML(b,false)).join('') : `<div class="empty-s">📭 No upcoming sessions yet — go book one! 🎓</div>`;
+    const pastEl = document.getElementById('ms-past');
+    pastEl.innerHTML = past.length ? past.map(b=>myBkHTML(b,true)).join('') : `<div class="empty-s">📭 No past sessions yet.</div>`;
+  } catch (err) {
+    console.error('Failed to render my sessions:', err);
+  }
+}
+
+function myBkHTML(b, isPast){
+  const parts = b.slot.split(' ');
+  const day = parts[0], time = parts.slice(1).join(' ');
+  return `<div class="bk-card">
+    <div class="bk-date"><div class="bk-day">${day}</div><div class="bk-mon">${time}</div></div>
+    <div class="bk-info">
+      <div class="bk-name">${b.senior_name}</div>
+      <div class="bk-details">${b.senior_major} · ${b.topic||'General advice'}</div>
+      <div class="bk-details" style="margin-top:2px;">${b.slot}</div>
+    </div>
+    <div class="bk-right">
+      <span class="bk-type ${b.type==='call'?'bk-call':'bk-meet'}">${b.type==='call'?'📞 Video call':'📍 In person'}</span>
+      ${!isPast?`<div class="bk-acts"><button class="bk-btn danger" onclick="cancelMyBk(${b.id})">Cancel</button></div>`:'<span style="font-size:12px;font-weight:700;color:#2d7a47;">✓ Done</span>'}
+    </div>
+  </div>`;
+}
+
+async function cancelMyBk(id){ 
+  alert('Cancel feature to be implemented with API');
+}
+
+function openWithdraw(dest){ wDest=dest; selectWopt(dest); document.getElementById('woverlay').classList.add('open'); }
+function closeWithdraw(){ document.getElementById('woverlay').classList.remove('open'); }
+function maybeCloseW(e){ if(e.target===document.getElementById('woverlay')) closeWithdraw(); }
+function selectWopt(dest){
+  wDest=dest;
+  document.getElementById('wopt-bank').classList.toggle('selected',dest==='bank');
+  document.getElementById('wopt-uni').classList.toggle('selected',dest==='uni');
+}
+
+async function confirmWithdraw(){
+  const amt = parseInt(document.getElementById('w-amount').value)||0;
+  if (amt<=0||amt>balance) { alert('Enter a valid amount.'); return; }
+  // Withdrawal API call would go here
+  alert(`✅ ${amt} AED will be sent to ${wDest==='bank'?'your bank account':'your university account'} within 1–2 business days!`);
+  closeWithdraw();
+}
+</script>
+</body>
+</html>
+ 
